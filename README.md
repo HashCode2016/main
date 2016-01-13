@@ -1,2 +1,2 @@
-# main
-Dépôt principal Hash Code 2016
+# Hash Code 2016
+
