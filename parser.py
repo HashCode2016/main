@@ -1,48 +1,56 @@
-# /bin/python3
+# /bin/python2
 # -!- encoding:utf8 -!-
 
 # ------ IMPORTS -------------------
 import os
 import sys
-
+from utils import *
 # ------ CONFIGURATION -------------
-#
-# nom du fichier à parser
-INPUT_FILENAME = 'input.txt'
-#
-#
 
 
 class Parser:
     def __init__(self, file_name):
         self.file_name = file_name
         self.lines = []
+        self.size = 0
+        self.max_col = 0
 
     def parse(self):
         splitted_line = []
+        self.size = 0
         with open(self.file_name, 'r') as f:
             for line in f:
+                self.size += 1
                 splitted_line = line.split()
                 self.lines.append(splitted_line)
+                self.max_col = max(len(splitted_line), self.max_col)
 
-    def column(self, c):
+    def get_column(self, c):
         col = []
+        if(c >= self.max_col):
+            return col
         for line in self.lines:
-            col.append(line[c])
+            if(len(line) > c):
+                col.append(line[c])
         return col
 
-    def line(self, l):
-        return self.lines[l]
+    def get_line(self, l):
+        return (self.lines[l] if l < self.size else [])
 
-    def columns(self, start, end):
+    def get_columns(self, start, end):
         while(start < end):
-            yield(self.column(start))
+            yield(self.get_column(start))
             start += 1
 
-    def lines(self, start, end):
+    def get_lines(self, start, end):
         while(start < end):
-            yield(self.line(start))
+            yield(self.get_line(start))
             start += 1
+
+    def get(self, l, c):
+        line = self.get_line(l)
+        return (aformat(line[c]) if len(line) > c else None)
+
 
 
 # ------ CONSTANTES ---------------
