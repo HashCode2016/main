@@ -4,7 +4,7 @@ import os
 from utils import INPUT_FILE_DIR
 
 if __name__ == "__main__":
-    input = sys.argv[1] if len(sys.argv) > 1 else 'input.txt'
+    input = sys.argv[1] if len(sys.argv) > 1 else 'test-input2016-logo.in'
     input = os.path.join(INPUT_FILE_DIR, input)
     p = Parser(input)
     p.parse()
