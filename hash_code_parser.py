@@ -48,7 +48,9 @@ class HashCodeParser:
     end parameter is excluded
     Ex : [1, 4] : returns columns 1, 2 and 3
     '''
-    def get_columns(self, start, end):
+    def get_columns(self, start=0, end=None):
+        if end is None:
+            end = self.nb_columns
         while start < end:
             yield(self.get_column(start))
             start += 1
@@ -58,7 +60,9 @@ class HashCodeParser:
     end parameter is excluded
     Ex : [1, 4] : returns lines 1, 2 and 3
     '''
-    def get_lines(self, start, end):
+    def get_lines(self, start=0, end=None):
+        if end is None:
+            end = self.nb_lines
         while start < end:
             yield(self.get_line(start))
             start += 1
