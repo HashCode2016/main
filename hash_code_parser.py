@@ -12,11 +12,18 @@ class HashCodeParser:
         self.parser = Parser(file_name)
         self.nb_lines = 0
         self.nb_columns = 0
+        self.matrix = []
 
     def parse(self):
         self.parser.parse()
         self.nb_lines = self.parser.size - 1
         self.nb_columns = self.parser.get(0, 1)
+        self.generate_matrix()
+
+    def generate_matrix(self):
+        self.matrix = []
+        for i in range(1, len(self.parser.lines)):
+            self.matrix.append(self.parser.lines[i])
 
     '''
     line_idx and column_idx are 0-based. First value at 0

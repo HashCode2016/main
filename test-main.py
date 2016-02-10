@@ -9,12 +9,9 @@ if __name__ == "__main__":
     p = ParserWrapperTest2016(input)
     p.parse()
     p.coherence_test()
-    # print(p.nb_lines)
-    # print(p.nb_columns)
-    # print(p.get_line(0))
-    '''for r in p.get_lines(0, 2):
-        print(r)'''
-    # print(p.get_column(0))
-    for c in p.get_columns():
-        print(c)
+
+    for l in range(p.nb_lines):
+        for c in range(p.nb_columns):
+            print(p.matrix[l][c], end='')
+        print()
 
