@@ -38,4 +38,10 @@ class Order:
     def cancel(self):
         self.status = ORDER_STATUS.TERMINATED
 
-    # TODO drop
+    def drop(self, product_id, nb_products):
+        for i in range(nb_products):
+            self.items_needed.remove(product_id)
+            self.items_in_progress.remove(product_id)
+
+        if len(self.items_needed) == 0:
+            self.status = ORDER_STATUS.TERMINATED
