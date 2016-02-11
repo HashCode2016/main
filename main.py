@@ -6,6 +6,7 @@ from utils import INPUT_FILE_DIR
 from droneManager import DroneManager
 from warehouseManager import WarehouseManager
 from orderManager import OrderManager
+from simu import simu
 
 
 def create_model(parser):
@@ -53,5 +54,5 @@ if __name__ == "__main__":
     p.parse()
 
     warehouseManager, orderManager, droneManager = create_model(p)
-    #simu()
+    simu(droneManager, orderManager, warehouseManager)
     droneManager.write_output('output2016-{0}.out'.format(file))

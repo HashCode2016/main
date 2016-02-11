@@ -34,6 +34,7 @@ class Order:
     def is_bringing(self, product_id, nb_products):
         for i in range(nb_products):
             self.items_in_progress.append(product_id)
+        self.status = ORDER_STATUS.INPROGRESS
 
     def cancel(self):
         self.status = ORDER_STATUS.TERMINATED

@@ -5,7 +5,8 @@
 #   WM = WarehouseManager
 #
 
-def load_drone(drone, order):
+
+def load_drone(drone, order, WM):
     item_id, item_qty = order.item_left(); # recuperation de l'item restant
     # tant que le drone n'est pas plein ou que la commande n'est pas complète
     while not drone.is_full(item_id, item_qty) or not item_id is None: 
@@ -25,25 +26,27 @@ def load_drone(drone, order):
         # on dit au drone de faire la livraison
         drone.deliver(order)
 
-def update_drones():
+
+def update_drones(DM, OM, WM):
     # tant qu'on a un drone disponible
     drone = DM.next_available_drone()
     while not drone is None: 
         # si une commande non traitée subsiste
         order = OM.next_unhandled_order()
         if not order is None: 
-            load_drone(drone, order)
+            load_drone(drone, order, WM)
         else: # si aucune commande existe 
             # le drone attend
             drone.wait()
         # on va chercher le prochain drone disponible
         drone = DM.next_available_drone()
 
+
 def simu(DM, OM, WM):
     # tant qu'on a pas atteint la fin de la simulation
     while not DM.simu_end():
         # on met a jour les drone en donnant des ordres si necessaire
-        update_drones()
+        update_drones(DM, OM, WM)
         # on fait avancer la simulation d'un pas
         DM.next_turn()
         
