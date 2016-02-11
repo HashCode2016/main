@@ -11,4 +11,10 @@ class OrderManager():
 		for order in self.orders:
 			if order.status == ORDER_STATUS.UNHANDELD:
 				return order
-		return None 
+		return None
+
+	def has_unhandled_command(self):
+		for order in self.orders:
+			if order.status == ORDER_STATUS.UNHANDELD:
+				return True
+		return False

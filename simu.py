@@ -1,4 +1,4 @@
-
+import sys
 #
 #   DM = DroneManager
 #   OM = OrderManager
@@ -9,7 +9,7 @@
 def load_drone(drone, order, WM):
     item_id, item_qty = order.item_left() # recuperation de l'item restant
     # tant que le drone n'est pas plein ou que la commande n'est pas complète
-    while not drone.is_full(item_id, item_qty) or not item_id is None: 
+    while item_id is not None and not drone.is_full(item_id, item_qty):
         # si on a au moins une une warehouse qui possède l'item
         warehouse = WM.get_closest_having(item_id, item_qty, drone)
         if warehouse is not None:
@@ -22,15 +22,17 @@ def load_drone(drone, order, WM):
         item_id, item_qty = order.item_left() # recuperation de l'item restant
         # quand on arrive là, la commande est abandonnée OU la commande est chargée OU le drone est plein
     # si le drone est plein OU la commande est complètement chargée
-    if drone.is_full(item_id, item_qty) or item_id is None:
+    if item_id is None or drone.is_full(item_id, item_qty):
         # on dit au drone de faire la livraison
-        drone.deliver(order)
+        drone.deliver_all(order) # , item_id, item_qty)
 
 
 def update_drones(DM, OM, WM):
     # tant qu'on a un drone disponible
     drone = DM.next_available_drone()
-    while not drone is None: 
+    max_it = 100
+    i = 0
+    while drone is not None and OM.has_unhandled_command() and i < max_it:
         # si une commande non traitée subsiste
         order = OM.next_unhandled_order()
         if not order is None: 
@@ -40,15 +42,14 @@ def update_drones(DM, OM, WM):
             drone.wait()
         # on va chercher le prochain drone disponible
         drone = DM.next_available_drone()
+        i += 1
 
 
 def simu(DM, OM, WM):
     # tant qu'on a pas atteint la fin de la simulation
     while not DM.simu_finished():
-        print("A")
         # on met a jour les drone en donnant des ordres si necessaire
         update_drones(DM, OM, WM)
-        print("B")
         # on fait avancer la simulation d'un pas
         DM.next_turn()
         

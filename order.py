@@ -1,3 +1,5 @@
+from warehouse import Warehouse
+
 class ORDER_STATUS:
     UNHANDELD = 0
     INPROGRESS = 1
@@ -9,8 +11,11 @@ class Order:
         self.id = id
         self.x = x
         self.y = y
-        self.items_needed = items
+        self.items_needed = []
         self.items_in_progress = []
+        for i in range(len(Warehouse.product_weight)):
+            self.items_needed.append(items.count(i))
+            self.items_in_progress.append(0)
         self.status = ORDER_STATUS.UNHANDELD
 
     def count(self, product_type):
@@ -19,30 +24,23 @@ class Order:
     # Return first needed object + quantity
     # Can return None if nothing left
     def item_left(self):
-        items_not_handled = self.items_needed
-        for item in self.items_in_progress:
-            items_not_handled.remove(item)
+        for i in range(len(self.items_needed)):
+            item_diff = self.items_needed[i] - self.items_in_progress[i]
+            if item_diff > 0:
+                return i, item_diff
 
-        if len(items_not_handled) == 0:
-            return None, None
-
-        first_item = items_not_handled[0]
-        nb_first_item_needed = items_not_handled.count(first_item)
-
-        return first_item, nb_first_item_needed
+        return None, None
 
     def is_bringing(self, product_id, nb_products):
-        for i in range(nb_products):
-            self.items_in_progress.append(product_id)
+        self.items_in_progress[product_id] += nb_products
         self.status = ORDER_STATUS.INPROGRESS
 
     def cancel(self):
         self.status = ORDER_STATUS.TERMINATED
 
     def drop(self, product_id, nb_products):
-        for i in range(nb_products):
-            self.items_needed.remove(product_id)
-            self.items_in_progress.remove(product_id)
+        self.items_needed[product_id] -= nb_products
+        self.items_in_progress[product_id] -= nb_products
 
         if len(self.items_needed) == 0:
             self.status = ORDER_STATUS.TERMINATED
