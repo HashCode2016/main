@@ -1,4 +1,4 @@
-import sys
+from drone import DRONE_STATUS
 #
 #   DM = DroneManager
 #   OM = OrderManager
@@ -18,6 +18,8 @@ def load_drone(drone, order, WM):
         else: # aucune warehouse ne contient cet item 
             # on abandonne la commande doit être abandonnée
             order.cancel()
+            drone.status = DRONE_STATUS.AVAILABLE
+            break
         # on recupere le dernier item
         item_id, item_qty = order.item_left() # recuperation de l'item restant
         # quand on arrive là, la commande est abandonnée OU la commande est chargée OU le drone est plein
@@ -39,7 +41,7 @@ def update_drones(DM, OM, WM):
             load_drone(drone, order, WM)
         else: # si aucune commande existe 
             # le drone attend
-            drone.wait()
+            pass#drone.wait()
         # on va chercher le prochain drone disponible
         drone = DM.next_available_drone()
         i += 1
