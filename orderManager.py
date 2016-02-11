@@ -4,10 +4,8 @@ class OrderManager():
 	def __init__(self):
 		self.orders = []
 
-	def add_order(self, x, y, types):
-		# create order
-		# add order to orders
-		pass
+	def add_order(self, id, x, y, types):
+		self.orders.append(Order(id, x, y, items))
 
 	def next_unhandled_order(self):
 		return self.orders[0]
