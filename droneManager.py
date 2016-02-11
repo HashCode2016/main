@@ -48,12 +48,12 @@ class DroneManager():
 	def get_output(self):
 		output = []
 		for drone in self.drones:
-			ouput += drone.command_string
-		return ouput
+			output += drone.command_string
+		return output
 
 	def write_output(self, filename):
 		output = self.get_output()
 		with open(filename, 'w') as f:
 			f.write("{0}\n".format(len(output)))
-	        for op in output:
-				f.write("{0}\n".format(op)
+			for op in output:
+				f.write("{0}\n".format(op))
