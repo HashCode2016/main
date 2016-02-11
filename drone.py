@@ -29,11 +29,11 @@ class Drone:
         for i in range(nb_products):
             self.items.append(product_id)
         order.is_bringing(product_id, nb_products)
-        self.curr_weight += (Drone.get_product_weight(product_id) * nb_products)
+        self.curr_weight += Drone.get_product_weight_with_nb(product_id, nb_products)
         self.turns += 1
         self.working_turn += 1
         self.status = DRONE_STATUS.WORKING
-        self.command_string.append("{0} L {1} {2} {3}", self.id, warehouse.id, product_id, nb_products)
+        self.command_string.append("{0} L {1} {2} {3}".format(self.id, warehouse.id, product_id, nb_products))
 
     def deliver(self, order, product_id, nb_products):
         self.move(order.x, order.y)
@@ -41,11 +41,11 @@ class Drone:
         order.drop(product_id, nb_products)
         for i in range(nb_products):
             self.items.remove(product_id)
-        self.curr_weight -= (Drone.get_product_weight(product_id) * nb_products)
+        self.curr_weight -= Drone.get_product_weight_with_nb(product_id, nb_products)
         self.turns += 1
         self.working_turn += 1
         self.status = DRONE_STATUS.WORKING
-        self.command_string.append("{0} D {1} {2} {3}", self.id, order.id, product_id, nb_products)
+        self.command_string.append("{0} D {1} {2} {3}".format(self.id, order.id, product_id, nb_products))
 
     def move(self, x, y):
         distance = self.distance(x, y)
@@ -66,12 +66,15 @@ class Drone:
         if self.working_turn <= 0:
             self.status = DRONE_STATUS.AVAILABLE
 
-    def is_full_if(self, product_id, nb_products):
+    def is_full(self, product_id, nb_products):
         if product_id is None:
             return False
 
-        expected_weight = self.curr_weight + (Drone.get_product_weight(product_id) * nb_products)
+        expected_weight = self.curr_weight + Drone.get_product_weight_with_nb(product_id, nb_products)
         return expected_weight > Drone.max_weight
 
+    def get_product_weight_with_nb(product_id, nb_products):
+        return Drone.get_product_weight(product_id) * nb_products
+
     def get_product_weight(product_id):
-        Warehouse.product_weight[product_id]
+        return int(Warehouse.product_weight[product_id])

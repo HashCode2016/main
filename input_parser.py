@@ -18,7 +18,7 @@ class Parser:
         with open(self.file_name, 'r') as f:
             for line in f:
                 self.size += 1
-                splitted_line = line.split()
+                splitted_line = [int(x) for x in line.split()]
                 self.lines.append(splitted_line)
                 self.max_col = max(len(splitted_line), self.max_col)
 

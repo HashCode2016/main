@@ -55,4 +55,6 @@ if __name__ == "__main__":
 
     warehouseManager, orderManager, droneManager = create_model(p)
     simu(droneManager, orderManager, warehouseManager)
-    droneManager.write_output('output2016-{0}.out'.format(file))
+    output_file = 'output2016-{0}.out'.format(file)
+    nb_lines = droneManager.write_output(output_file)
+    print("{0} lines has been printed to {1}".format(nb_lines, output_file))

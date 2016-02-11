@@ -43,7 +43,7 @@ class DroneManager():
 		self.current_turn += 1
 
 	def simu_finished(self):
-		return (self.current_turn - self.max_turn) < 0
+		return self.current_turn >= self.max_turn
 
 	def get_output(self):
 		output = []
@@ -57,3 +57,4 @@ class DroneManager():
 			f.write("{0}\n".format(len(output)))
 			for op in output:
 				f.write("{0}\n".format(op))
+		return len(output)

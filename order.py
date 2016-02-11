@@ -18,7 +18,7 @@ class Order:
 
     # Return first needed object + quantity
     # Can return None if nothing left
-    def items_left(self):
+    def item_left(self):
         items_not_handled = self.items_needed
         for item in self.items_in_progress:
             items_not_handled.remove(item)
@@ -46,3 +46,5 @@ class Order:
 
         if len(self.items_needed) == 0:
             self.status = ORDER_STATUS.TERMINATED
+        else:
+            self.status = ORDER_STATUS.UNHANDELD
