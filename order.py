@@ -37,3 +37,5 @@ class Order:
 
     def cancel(self):
         self.status = ORDER_STATUS.TERMINATED
+
+    # TODO drop
