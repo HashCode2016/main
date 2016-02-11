@@ -12,29 +12,23 @@ class WarehouseManager():
 		return None	
 
 	def get_closest_wharehouse_having_item(self, item, quantity, drone):
-		# for warehouse in self.warehouses:
-		# 	if warehouse.has(item, quantity):
-		# 		return warehouse
-		# return None
+		# opti possible with only one for
+		having_item_warehouse = []
+		for warehouse in self.warehouses:
+			if warehouse.has(item, quantity):
+				having_item_warehouse.append(warehouse)
+		if len(having_item_warehouse) == 0:
+			return None
 
-		# # opti possible with only one for
-		# having_item_warehouse = []
-		# for drone in self.drones:
-		# 	if drone.status == DRONE_STATUS.AVAILABLE:
-		# 		having_item_warehouse.append(drone)
-		# if len(having_item_warehouse) == 0:
-		# 	return None
-
-		# # search for the closest
-		# closest_drone = having_item_warehouse[0]
-		# min_distance = closest_drone.distance(x,y)
-		# for drone in having_item_warehouse:
-		# 	cur_distance = drone.distance(x,y)
-		# 	if cur_distance < min_distance:
-		# 		min_distance = cur_distance
-		# 		closest_drone = drone
-		# return closest_drone
-		pass
+		# search for the closest
+		closest_warehouse = having_item_warehouse[0]
+		min_distance = drone.distance(closest_warehouse.x,closest_warehouse.y)
+		for warehouse in having_item_warehouse:
+			cur_distance = drone.distance(warehouse.x,warehouse.y)
+			if cur_distance < min_distance:
+				min_distance = cur_distance
+				closest_warehouse = warehouse
+		return closest_warehouse
 
 	def add_warehouse(self, id, x, y, quantities):
 		self.warehouses.append(Warehouse(id, x, y, quantities))
