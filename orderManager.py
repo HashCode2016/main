@@ -1,4 +1,4 @@
-from order import Order
+from order import Order, ORDER_STATUS
 class OrderManager():
 	"""docstring for OrderManager"""
 	def __init__(self):
@@ -8,4 +8,7 @@ class OrderManager():
 		self.orders.append(Order(id, x, y, items))
 
 	def next_unhandled_order(self):
-		return self.orders[0]
+		for order in self.orders:
+			if order.status == ORDER_STATUS.UNHANDELD
+				return order
+		return None 

@@ -5,13 +5,13 @@ class WarehouseManager():
 		Warehouse.product_weight = products_weight
 		self.warehouses = []
 		
-	def get_warehouse_having_item(self, item, quantity):
+	def get_having(self, item, quantity):
 		for warehouse in self.warehouses:
 			if warehouse.has(item, quantity):
 				return warehouse
 		return None	
 
-	def get_closest_wharehouse_having_item(self, item, quantity, drone):
+	def get_closest_having(self, item, quantity, drone):
 		# opti possible with only one for
 		having_item_warehouse = []
 		for warehouse in self.warehouses:
