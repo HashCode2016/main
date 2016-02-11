@@ -12,17 +12,18 @@ while not DM.simu_end():
         # si une commande non traitée subsiste
         if not (o = OM.next_unhandled_order()) is None: 
             # tant que le drone n'est pas plein ou que la commande n'est pas complète
-            while not d.is_full(o.item_left()) or not o.item_left() is None: 
+            item_id, item_qty = o.item_left(); # recuperation de l'item restant
+            while not d.is_full(item_id, item_qty) or not item_id is None: 
                 # si on a au moins une une warehouse qui possède l'item
-                if not (w = WM.get_closest_having(o.item_left())) is None: 
+                if not (w = WM.get_closest_having(item_id, item_qty, d)) is None: 
                     # on demande au drone de charger
-                    d.load(w, o.item_left(), o)
+                    d.load(item_id, item_qty, w, o)
                 else: # aucune warehouse ne contient cet item 
                     # on abandonne la commande doit être abandonnée
                     o.cancel()
             # quand on arrive là, la commande est abandonnée OU la commande est chargée OU le drone est plein
             # si le drone est plein OU la commande est complètement chargée
-            if d.is_full(o.item_left()) or o.item_left() is None:
+            if d.is_full(item_id, item_qty) or item_id is None:
                 # on dit au drone de faire la livraison
                 d.deliver(o)
         else: # si aucune commande existe 
