@@ -17,6 +17,7 @@ class Drone:
         self.curr_weight = 0
         self.items = []
         self.turns = 0
+        self.working_turn = 0
         self.command_string = []
         self.status = DRONE_STATUS.AVAILABLE
 
@@ -28,6 +29,8 @@ class Drone:
         for i in range(nb_products):
             self.items.append(product_id)
         self.turns += 1
+        self.working_turn += 1
+        self.status = DRONE_STATUS.WORKING
         self.command_string.append("{0} L {1} {2} {3}", self.id, warehouse.id, product_id, nb_products)
 
     def deliver(self, order, product_id, nb_products):
@@ -37,11 +40,14 @@ class Drone:
         for i in range(nb_products):
             self.items.remove(product_id) #???
         self.turns += 1
+        self.working_turn += 1
+        self.status = DRONE_STATUS.WORKING
         self.command_string.append("{0} D {1} {2} {3}", self.id, order.id, product_id, nb_products)
 
     def move(self, x, y):
         distance = self.distance(x, y)
         self.turns += ceil(distance)
+        self.working_turn += ceil(distance)
         self.x = x
         self.y = y
 
@@ -52,3 +58,9 @@ class Drone:
 
     def is_full(self):
         pass # TODO handle current weight
+
+    def next_turn(self):
+        self.turns += 1
+        self.working_turn -= 1
+        if self.working_turn <= 0:
+            self.status = DRONE_STATUS.AVAILABLE
