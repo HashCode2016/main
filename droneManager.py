@@ -44,3 +44,16 @@ class DroneManager():
 
 	def simu_finished(self):
 		return (self.current_turn - self.max_turn) < 0
+
+	def get_output(self):
+		output = []
+		for drone in self.drones:
+			ouput += drone.command_string
+		return ouput
+
+	def write_output(self, filename):
+		output = self.get_output()
+		with open(filename, 'w') as f:
+			f.write("{0}\n".format(len(output)))
+	        for op in output:
+				f.write("{0}\n".format(op)
