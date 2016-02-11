@@ -34,14 +34,14 @@ def update_drones(DM, OM, WM):
     drone = DM.next_available_drone()
     max_it = 100
     i = 0
-    while drone is not None and OM.has_unhandled_command() and i < max_it:
+    while drone is not None:
         # si une commande non traitée subsiste
         order = OM.next_unhandled_order()
-        if not order is None: 
+        if not order is None:
             load_drone(drone, order, WM)
         else: # si aucune commande existe 
             # le drone attend
-            pass#drone.wait()
+            break#drone.wait()
         # on va chercher le prochain drone disponible
         drone = DM.next_available_drone()
         i += 1
