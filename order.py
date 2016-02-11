@@ -9,8 +9,31 @@ class Order:
         self.id = id
         self.x = x
         self.y = y
-        self.items = items
+        self.items_needed = items
+        self.items_in_progress = []
         self.status = ORDER_STATUS.UNHANDELD
 
     def count(self, product_type):
         return self.items.count(product_type)
+
+    # Return first needed object + quantity
+    # Can return None if nothing left
+    def items_left(self):
+        items_not_handled = self.items_needed
+        for item in self.items_in_progress:
+            items_not_handled.remove(item)
+
+        if len(items_not_handled) == 0:
+            return None, None
+
+        first_item = items_not_handled[0]
+        nb_first_item_needed = items_not_handled.count(first_item)
+
+        return first_item, nb_first_item_needed
+
+    def is_bringing(self, product_id, nb_products):
+        for i in range(nb_products):
+            self.items_in_progress.append(product_id)
+
+    def cancel(self):
+        self.status = ORDER_STATUS.TERMINATED

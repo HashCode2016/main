@@ -9,7 +9,7 @@ from orderManager import OrderManager
 
 
 def create_model(parser):
-    product_weights = parser.get_line(2)
+    '''product_weights = parser.get_line(2)
     warehouseManager = WarehouseManager(product_weights)
     nb_warehouse = int(parser.get_line(3)[0])
     for i in range(0, nb_warehouse*2, 2):
@@ -18,15 +18,16 @@ def create_model(parser):
         y = coords[0]
         quantities = parser.get_line(5+i)
         #print("x {0} / y {1} / quant_len : {2}".format(x, y, len(quantities)))
-        warehouseManager.add_warehouse(x, y, quantities)
+        warehouseManager.add_warehouse(x, y, quantities)'''
 
     max_weight = int(parser.get_line(0)[-1])
     drone_count = int(parser.get_line(0)[2])
+    max_turns = int(parser.get_line(0)[3])
     first_warehouse_x = int(p.lines[4][1])
     first_warehouse_y = int(p.lines[4][0])
-    droneManager = DroneManager(max_weight, drone_count, first_warehouse_x, first_warehouse_y)
-
-    orderManager = OrderManager()
+    droneManager = DroneManager(max_weight, drone_count, first_warehouse_x, first_warehouse_y, max_turns)
+    
+    '''orderManager = OrderManager()
     order_idx = 4 + nb_warehouse*2
     nb_orders = int(parser.get_line(order_idx)[0])
     for i in range(order_idx+1, order_idx + nb_orders*3, 3):
@@ -37,7 +38,7 @@ def create_model(parser):
         #print("x {0} / y {1} / pro_len {2}".format(x, y, len(products_needed)))
         orderManager.add_order(x, y, products_needed)
 
-    return warehouseManager, orderManager, droneManager
+    return warehouseManager, orderManager, droneManager'''
 
 
 if __name__ == "__main__":
