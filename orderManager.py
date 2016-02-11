@@ -1,4 +1,4 @@
-import order
+from order import Order
 class OrderManager():
 	"""docstring for OrderManager"""
 	def __init__(self):

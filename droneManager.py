@@ -1,4 +1,5 @@
 from drone import Drone, DRONE_STATUS
+
 class DroneManager():
 	"""docstring for DroneManager"""
 	def __init__(self, max_weight, drone_count, x0, y0, max_turn):
@@ -42,4 +43,4 @@ class DroneManager():
 		self.current_turn += 1
 
 	def simu_finished(self):
-		return (self.current_turn - max_turn) < 0
+		return (self.current_turn - self.max_turn) < 0

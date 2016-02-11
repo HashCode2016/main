@@ -1,7 +1,8 @@
-import warehouse
+from warehouse import Warehouse
 class WarehouseManager():
 	"""docstring for WareHouse"""
-	def __init__(self):
+	def __init__(self, products_weight):
+		Warehouse.product_weight = products_weight
 		self.warehouses = []
 		
 	def get_warehouse_having_item(self, item, quantity):

@@ -8,6 +8,7 @@ class DRONE_STATUS:
 
 class Drone:
     max_weight = 0
+    max_turns = 0
 
     def __init__(self, id, x, y):
         self.id = id
@@ -45,6 +46,9 @@ class Drone:
         self.y = y
 
     def distance(self, x, y):
-        Xs = pow(fabs(self.x, x), 2)
-        Ys = pow(fabs(self.y, y), 2)
+        Xs = pow(fabs(self.x - x), 2)
+        Ys = pow(fabs(self.y - y), 2)
         return sqrt(Xs +Ys)
+
+    def is_full(self):
+        pass # TODO handle current weight
