@@ -42,9 +42,16 @@ def create_model(parser):
 
 
 if __name__ == "__main__":
-    input = sys.argv[1] if len(sys.argv) > 1 else 'input2016-busy_day.in'
-    input = os.path.join(INPUT_FILE_DIR, input)
+    file = sys.argv[1] if len(sys.argv) > 1 else 'busy_day'
+    if not file.endswith('.in'):
+        file_name = file + '.in'
+    else:
+        file_name = file
+    input_fn = 'input2016-{0}'.format(file_name)
+    input = os.path.join(INPUT_FILE_DIR, input_fn)
     p = Parser(input)
     p.parse()
 
     warehouseManager, orderManager, droneManager = create_model(p)
+    #simu()
+    droneManager.write_output('output2016-{0}.out'.format(file))
