@@ -9,6 +9,6 @@ class OrderManager():
 
 	def next_unhandled_order(self):
 		for order in self.orders:
-			if order.status == ORDER_STATUS.UNHANDELD
+			if order.status == ORDER_STATUS.UNHANDELD:
 				return order
 		return None 

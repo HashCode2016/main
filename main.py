@@ -35,7 +35,7 @@ def create_model(parser):
         x = coords[1]
         y = coords[0]
         products_needed = parser.get_line(order_idx + 3 + i*3)
-        print("x {0} / y {1} / pro_len {2}".format(x, y, len(products_needed)))
+        #print("x {0} / y {1} / pro_len {2}".format(x, y, len(products_needed)))
         orderManager.add_order(i, x, y, products_needed)
 
     return warehouseManager, orderManager, droneManager
