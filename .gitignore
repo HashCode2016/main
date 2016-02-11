@@ -3,4 +3,5 @@ __pycache__
 .idea/
 *.zip
 *.out
+*.pyc
 *.pdf
