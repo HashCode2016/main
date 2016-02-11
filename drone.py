@@ -61,6 +61,7 @@ class Drone:
 
     def next_turn(self):
         self.turns += 1
-        self.working_turn -= 1
+        if self.working_turn > 0:
+            self.working_turn -= 1
         if self.working_turn <= 0:
             self.status = DRONE_STATUS.AVAILABLE

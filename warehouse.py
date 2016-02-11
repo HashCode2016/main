@@ -13,3 +13,6 @@ class Warehouse:
             raise Exception('Not enough products (warehouse {0})'.format(self.id))
 
         self.items[product_id] -= nb_products
+
+    def has(self, product_id, nb_products):
+        return self.items[product_id] >= nb_products
