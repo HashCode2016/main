@@ -12,7 +12,7 @@ public:
 private:
     static void _update_drones(WarehouseManager & wm, OrderManager & om, DroneManager & dm);
     static void _load_drone(Drone * drone, Order * order, WarehouseManager & wm);
-    static bool _update_load(const Item & item, Drone * drone);
+    static int _update_load(const Item & item, Drone * drone);
 
 private:
     Simulator(){}

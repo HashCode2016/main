@@ -36,9 +36,9 @@ int main(int argc, char *argv[])
     if(!p.is_valid())
     {   ABORT("Main","main","parsing failed.",PARSING_FAILED);
     }
-    TRACE("Main","main","parsing done. Initializing model...");
+    INFO("Main","main","parsing done. Initializing model...");
 
-    /// \note DO NOT change initialization order
+    /// \warning DO NOT change initialization order
     // -- init classes statics
     init_model_static(p);
 
@@ -59,14 +59,14 @@ int main(int argc, char *argv[])
     debug(wm, om, dm);
 #endif
 
-    TRACE("Main","main","model init done. Running simulation...");
+    INFO("Main","main","model init done. Running simulation...");
     // -- run simulation
     Simulator::run_simu(wm, om, dm);
-    TRACE("Main","main","simulation done. Writing output...");
+    INFO("Main","main","simulation done. Writing output...");
 
     Writer::write(argv[2], dm);
 
-    TRACE("Main","main","output writen. End.");
+    INFO("Main","main","output writen. End.");
 
     exit(ALL_GOOD);
 }
@@ -105,7 +105,7 @@ void debug(WarehouseManager & wm, OrderManager & om, DroneManager & dm)
 
 void init_model_static(Parser & p)
 {
-    TRACE("Main","init_model_static","init model static.");
+    INFO("Main","init_model_static","init model static.");
     QVector<int> v = p.get_int_line(0);
     if(v.count() != 5)
     {   ABORT("Main","init_model_static","init failed, incorrect mal formatted input line.",INIT_FAILED);
@@ -128,7 +128,7 @@ void init_model_static(Parser & p)
 
 void init_warehouse_manager(Parser & p, WarehouseManager & wm)
 {
-    TRACE("Main","init_warehouse_manager","init warehouse manager.");
+    INFO("Main","init_warehouse_manager","init warehouse manager.");
     int warehouse_section_index = PRELUDE_LEN-1;
     QVector<int> v = p.get_int_line(warehouse_section_index);
     if(v.count() != 1)
@@ -147,7 +147,7 @@ void init_warehouse_manager(Parser & p, WarehouseManager & wm)
 
 void init_order_manager(Parser & p, WarehouseManager & wm, OrderManager & om)
 {
-    TRACE("Main","init_order_manager","init order manager.");
+    INFO("Main","init_order_manager","init order manager.");
     int order_section_index = PRELUDE_LEN + wm.count() * LINES_PER_WAREHOUSE;
     QVector<int> v = p.get_int_line(order_section_index);
     if(v.count() != 1)

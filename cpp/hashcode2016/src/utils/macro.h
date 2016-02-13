@@ -8,7 +8,7 @@
 // ---------------------------------------------------------------------
 //
 // toggle comment to enable/disable TRACE messages
-#define ENABLE_TRACE
+//#define ENABLE_TRACE
 //
 // toggle comment to enable/disable DEBUG messages
 //#define ENABLE_DEBUG
@@ -21,6 +21,7 @@
 #define STDERR std::cerr
 #define STDOUT std::cout
 #define LOG(out, lvl, clas, func, msg) out<<"["<<lvl<<"] - "<<clas<<"::"<<func<<": "<<msg<<std::endl
+#define INFO(clas, func, msg) LOG(STDOUT, "INFO", clas, func, msg)
 #define ERROR(clas, func, msg) LOG(STDERR, "ERROR", clas, func, msg)
 #define ABORT(clas, func, msg, code) ERROR(clas, func, msg); exit(code)
 

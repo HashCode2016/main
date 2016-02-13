@@ -7,14 +7,14 @@ WarehouseManager::WarehouseManager() :
 {
 }
 
-Warehouse *WarehouseManager::get_closest_having(Item item, Drone *drone)
+Warehouse *WarehouseManager::get_closest_having(int item_id, int item_qty, Drone *drone)
 {
     // find closest warehouse having item
     int min_dist = Warehouse::MAX_DIST();
     Warehouse * closest = NULL;
     for(int i = 0; i < _warehouses.count(); ++i)
     {   // if warehouse contains the item
-        if(_warehouses[i].contains(item.id, item.qty))
+        if(_warehouses[i].contains(item_id, item_qty))
         {   // if distance to drone is min
             int dist = drone->distance_to(_warehouses[i].pos());
             if(dist < min_dist)
@@ -23,10 +23,11 @@ Warehouse *WarehouseManager::get_closest_having(Item item, Drone *drone)
             }
         }
     }
-    TRACE("WarehouseManager","get_closest_having",QString("warehouse(id=%1) is the closest having item(id=%2,qty=%3)")
+    TRACE("WarehouseManager","get_closest_having",QString("warehouse(id=%1) is the closest having item(id=%2,required_qty=%3,stock_qty=%4)")
             .arg(QString::number(closest->id()),
-                 QString::number(item.id),
-                 QString::number(item.qty))
+                 QString::number(item_id),
+                 QString::number(item_qty),
+                 QString::number(closest->quantity(item_id)))
             .toStdString());
     return closest;
 }

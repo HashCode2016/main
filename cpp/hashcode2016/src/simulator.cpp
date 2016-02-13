@@ -4,7 +4,7 @@
 
 void Simulator::run_simu(WarehouseManager & wm, OrderManager & om, DroneManager & dm)
 {   // tracing -----------------------------------------------------------
-    TRACE("Simulator","run_simu","simu beginning.");
+    INFO("Simulator","run_simu","simu beginning.");
     // tracing -----------------------------------------------------------
     // tant qu'on a pas atteint la fin de la simulation
     while(!dm.simu_finished())
@@ -43,11 +43,13 @@ void Simulator::_load_drone(Drone * drone, Order * order, WarehouseManager & wm)
         item = order->item_left();
         load = _update_load(item, drone);
         if(load)
-        {   // si on a au moins une une warehouse qui possède l'item
-            Warehouse * warehouse = wm.get_closest_having(item, drone);
+        {   // trouver la quantité maximale chargeable de l'item
+            int loadable_qty = drone->max_qty(item);
+            // si on a au moins une une warehouse qui possède l'item
+            Warehouse * warehouse = wm.get_closest_having(item.id, loadable_qty, drone);
             if(warehouse != NULL)
             {   // on demande au drone de charger
-                drone->load(item, warehouse, order);
+                drone->load(item.id, loadable_qty, warehouse, order);
             }
             else // aucune warehouse ne contient cet item
             {   order->cancel(); // on abandonne la commande doit être abandonnée
@@ -63,16 +65,16 @@ void Simulator::_load_drone(Drone * drone, Order * order, WarehouseManager & wm)
     } while(load);
 }
 
-bool Simulator::_update_load(const Item & item, Drone * drone)
+int Simulator::_update_load(const Item & item, Drone * drone)
 {
-    bool ok = true;
+    bool continue_loading(true);
     if(!item.valid)
     {   TRACE("Simulator","_update_load","order fully loaded");
-        ok = false;
+        continue_loading = false;
     }
-    else if(drone->is_full(item))
+    else if(drone->max_qty(item) == 0)
     {   TRACE("Simulator","_update_load","drone is full");
-        ok = false;
+        continue_loading = false;
     }
-    return ok;
+    return continue_loading;
 }

@@ -11,7 +11,7 @@ public:
     WarehouseManager();
 
     inline int count() const { return _warehouses.count(); }
-    Warehouse * get_closest_having(Item item, Drone * drone);
+    Warehouse * get_closest_having(int item_id, int item_qty, Drone * drone);
     void add(int id, QPoint pos, QVector<int> quantities);
     QPoint drones_origin();
 

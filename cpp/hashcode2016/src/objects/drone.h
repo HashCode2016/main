@@ -22,7 +22,7 @@ public:
     inline State state() const { return _state; }
 
     // -- commands functions
-    void load(Item item, Warehouse * w, Order * o);
+    void load(int item_id, int item_qty, Warehouse * w, Order * o);
     void unload(Warehouse * w, int item_id, int item_qty);
     void deliver(Order * o);
     void wait();
@@ -30,7 +30,7 @@ public:
     void next_turn();
     // -- data functions
     int pick(int order_id, int item_id, int item_qty);
-    bool is_full(Item item);
+    int max_qty(Item item);
     inline QByteArray commands() const { return _commands; }
     // -- utils functions
     int distance_to(QPoint p);

@@ -1,4 +1,5 @@
 #include "dronemanager.h"
+#include "src/utils/macro.h"
 
 int DroneManager::_DRONE_COUNT = 0;
 
@@ -24,6 +25,13 @@ void DroneManager::next_turn()
     }
     // increment turn counter
     turn_counter++;
+    // info
+    if(turn_counter % 2000 == 0)
+    {   INFO("DroneManager", "next_turn", QString("%1/%2 completed.")
+             .arg(QString::number(turn_counter),
+                  QString::number(Drone::MAX_TURN()))
+             .toStdString());
+    }
 }
 
 Drone *DroneManager::next_available_drone()

@@ -15,6 +15,7 @@ public:
 
     inline int id() const { return _id; }
     inline QPoint pos() const { return _pos; }
+    inline int quantity(int item_id) { return _items[item_id]; }
 
     /**
      * @brief to_string

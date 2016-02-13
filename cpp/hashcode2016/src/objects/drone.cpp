@@ -34,7 +34,7 @@ int Drone::MAX_TURN(int MAX_TURN)
     return _MAX_TURN;
 }
 
-void Drone::load(Item item, Warehouse *w, Order *o)
+void Drone::load(int item_id, int item_qty, Warehouse *w, Order *o)
 {
     TRACE("Drone","load",QString("(id=%1,state=WORKING) at warehouse(id=%2) for order(id=%3).")
           .arg(QString::number(_id),QString::number(w->id()),QString::number(o->id()))
@@ -45,19 +45,19 @@ void Drone::load(Item item, Warehouse *w, Order *o)
     // load operation takes one more turn
     _workload++;
     // remove items from warehouse
-    w->pick(item.id, item.qty);
+    w->pick(item_id, item_qty);
     // update current weight
-    _current_weight += Warehouse::PRODUCTS_WEIGHT(item.id) * item.qty;
+    _current_weight += Warehouse::PRODUCTS_WEIGHT(item_id) * item_qty;
     // add items to drone
-    _items[item.id] += item.qty;
+    _items[item_id] += item_qty;
     // add items to order
-    o->loaded(item.id, item.qty);
+    o->loaded(item_id, item_qty);
     // add command
     _add_command(QString("%1 L %2 %3 %4").arg(
                      QString::number(_id),
                      QString::number(w->id()),
-                     QString::number(item.id),
-                     QString::number(item.qty)));
+                     QString::number(item_id),
+                     QString::number(item_qty)));
 }
 
 void Drone::unload(Warehouse *w, int item_id, int item_qty)
@@ -131,13 +131,26 @@ int Drone::pick(int order_id, int item_id, int item_qty)
     return real_qty;
 }
 
-bool Drone::is_full(Item item)
+int Drone::max_qty(Item item)
 {
-    bool full(false);
-    if(item.valid && Warehouse::PRODUCTS_WEIGHT(item.id) * item.qty + _current_weight > _MAX_WEIGHT)
-    {   full = true;
-    }
-    return full;
+    bool overload = true;
+    int allowed_qty(item.qty);
+    int removed(0);
+    do
+    {
+        allowed_qty -= removed;
+        overload = ((allowed_qty * Warehouse::PRODUCTS_WEIGHT(item.id) + _current_weight) > _MAX_WEIGHT);
+        removed++;
+    } while(overload && allowed_qty > 0);
+    TRACE("Drone","max_qty",QString("(item_id=%1,item_weight=%2,required_quantity=%3,max_weight=%4,removed=%5,allowed_qty=%6)")
+          .arg(QString::number(item.id),
+               QString::number(Warehouse::PRODUCTS_WEIGHT(item.id)),
+               QString::number(item.qty),
+               QString::number(_MAX_WEIGHT),
+               QString::number(removed),
+               QString::number(allowed_qty))
+          .toStdString());
+    return allowed_qty;
 }
 
 int Drone::distance_to(QPoint p)
