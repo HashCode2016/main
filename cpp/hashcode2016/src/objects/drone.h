@@ -20,6 +20,8 @@ public:
 
     inline int id() const { return _id; }
     inline State state() const { return _state; }
+    inline QByteArray commands() const { return _commands; }
+    inline int commands_count() const { return _command_counter; }
 
     // -- commands functions
     void load(int item_id, int item_qty, Warehouse * w, Order * o);
@@ -31,7 +33,7 @@ public:
     // -- data functions
     int pick(int order_id, int item_id, int item_qty);
     int max_qty(Item item);
-    inline QByteArray commands() const { return _commands; }
+
     // -- utils functions
     int distance_to(QPoint p);
 
@@ -52,6 +54,7 @@ private:
     QPoint _pos;
     QVector<int> _items;
     QByteArray _commands;
+    int _command_counter;
 
     static int _MAX_WEIGHT;
     static int _MAX_TURN;

@@ -16,7 +16,8 @@ Drone::Drone(int id, QPoint pos, int nb_types) :
     _state(AVAILABLE),
     _pos(pos),
     _items(nb_types, 0),
-    _commands("")
+    _commands(""),
+    _command_counter(0)
 {
 }
 
@@ -183,5 +184,6 @@ void Drone::_move_to(QPoint p)
 void Drone::_add_command(QString command)
 {
     _commands += command + '\n';
+    _command_counter++;
 }
 

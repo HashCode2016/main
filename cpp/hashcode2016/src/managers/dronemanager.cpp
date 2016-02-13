@@ -49,10 +49,12 @@ Drone *DroneManager::next_available_drone()
 QByteArray DroneManager::commands() const
 {
     QByteArray data;
+    int commands_total(0);
     for(QList<Drone>::const_iterator it = _drones.begin(); it != _drones.end(); ++it)
-    {   data += it->commands();
+    {   commands_total += it->commands_count();
+        data += it->commands();
     }
-    return data;
+    return data.prepend(QString::number(commands_total).append('\n').toUtf8());
 }
 
 QString DroneManager::to_string() const
