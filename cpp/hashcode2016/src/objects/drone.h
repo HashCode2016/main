@@ -4,7 +4,9 @@
 #include <QPoint>
 #include <QVector>
 #include "warehouse.h"
-#include "order.h"
+#include "src/struct.h"
+
+class Order;
 
 class Drone
 {
@@ -16,21 +18,31 @@ public:
 
     Drone(int id, QPoint pos, int nb_types);
 
-    static int MAX_WEIGHT(int MAX_WEIGHT = -1);
-    static int MAX_TURN(int MAX_TURN = -1);
+    inline int id() const { return _id; }
+    inline State state() const { return _state; }
 
     // -- commands functions
-    void load(ItemLeft item_left, Warehouse * w, Order * o);
+    void load(Item item, Warehouse * w, Order * o);
     void unload(Warehouse * w, int item_id, int item_qty);
     void deliver(Order * o);
     void wait();
     // -- simu functions
     void next_turn();
     // -- data functions
-    bool is_full(ItemLeft item_left);
+    int pick(int order_id, int item_id, int item_qty);
+    bool is_full(Item item);
+    inline QByteArray commands() const { return _commands; }
+    // -- utils functions
+    int distance_to(QPoint p);
+
+    QString to_string() const;
+
+    static int MAX_WEIGHT(int MAX_WEIGHT = -1);
+    static int MAX_TURN(int MAX_TURN = -1);
 
 private:
     void _move_to(QPoint p);
+    void _add_command(QString command);
 
 private:
     int _id;
@@ -39,6 +51,7 @@ private:
     State _state;
     QPoint _pos;
     QVector<int> _items;
+    QByteArray _commands;
 
     static int _MAX_WEIGHT;
     static int _MAX_TURN;
