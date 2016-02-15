@@ -35,6 +35,8 @@ class Drone:
         #self.turns += 1
         self.working_turn += 1
         self.status = DRONE_STATUS.WORKING
+        if(self.curr_weight > Drone.max_weight):
+            print(self.curr_weight)
         self.command_string.append("{0} L {1} {2} {3}".format(self.id, warehouse.id, product_id, nb_products))
         print("{0} L {1} {2} {3}".format(self.id, warehouse.id, product_id, nb_products))
         sys.stdout.flush()
@@ -42,6 +44,7 @@ class Drone:
     def deliver_all(self, order):
         for i in range(len(self.items)):
             if self.items[i] != 0:
+                #print('delivering {0} items {1}'.format(self.items[i],i))
                 self.deliver(order, i, self.items[i])
 
     def deliver(self, order, product_id, nb_products):
@@ -83,8 +86,16 @@ class Drone:
         expected_weight = self.curr_weight + Drone.get_product_weight_with_nb(product_id, nb_products)
         return expected_weight > Drone.max_weight
 
+    def max_qty(self, product_id, nb_products):
+        if product_id is None:
+            return 0
+
+        while (self.curr_weight + Drone.get_product_weight_with_nb(product_id, nb_products)) > Drone.max_weight:
+            nb_products-=1
+        return nb_products
+
     def get_product_weight_with_nb(product_id, nb_products):
         return Drone.get_product_weight(product_id) * nb_products
 
     def get_product_weight(product_id):
-        return int(Warehouse.product_weight[product_id])
+        return Warehouse.product_weight[product_id]

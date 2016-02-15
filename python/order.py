@@ -41,8 +41,12 @@ class Order:
     def drop(self, product_id, nb_products):
         self.items_needed[product_id] -= nb_products
         self.items_in_progress[product_id] -= nb_products
+        if(self.items_needed[product_id]<0):
+            print('warning!! trying to drop {0} items, {1} needed'.format(nb_products,self.items_needed[product_id]+nb_products ))
+            print(product_id, self.id)
+            print('in progress ; {0}'.format(self.items_in_progress[product_id]+nb_products))
 
-        if len(self.items_needed) == 0:
+        if sum(self.items_needed) == 0:
             self.status = ORDER_STATUS.TERMINATED
         else:
             self.status = ORDER_STATUS.UNHANDELD

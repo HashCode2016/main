@@ -43,7 +43,7 @@ class DroneManager():
 		self.current_turn += 1
 
 	def simu_finished(self):
-		print(self.current_turn)
+		#print(self.current_turn)
 
 		return self.current_turn >= self.max_turn
 
